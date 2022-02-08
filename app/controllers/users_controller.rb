@@ -5,7 +5,9 @@ class UsersController < ApplicationController
   def create
     user_exist = User.find_by_email(user_params["email"])
     if user_exist == nil
-      user = User.new(user_params)
+      data = user_params
+      data["email"] = data["email"].downcase
+      user = User.new(data)
       if user.save
         session[:user_id] = user.id
         redirect_to '/'

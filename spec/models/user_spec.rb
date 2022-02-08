@@ -88,6 +88,35 @@ RSpec.describe User, type: :model do
   end
 
   describe '.authenticate_with_credentials' do
-    #for tmrw!!!!!!
+    before(:each) do
+      @user = User.create(
+        first_name: "Allen",
+        last_name: "Zhao",
+        email: "abc@gmail.com",
+        password: "123456",
+        password_confirmation: "123456"
+      )
+    end
+
+    it "return an instance of user if email and password match" do
+      res = User.authenticate_with_credentials("abc@gmail.com", "123456")
+      expect(res).to be_an_instance_of(User) 
+    end
+
+    it "return nil if email and password don't match" do
+      res = User.authenticate_with_credentials("abc@gmail.com", "123123")
+      expect(res).to be nil 
+    end
+
+    it "still authenticated successfully even there are spaces before and/or after email address" do
+      res = User.authenticate_with_credentials("   abc@gmail.com   ", "123456")
+      expect(res).to be_an_instance_of(User) 
+    end
+
+    it "still authenticated successfully even the email address is in wrong case" do
+      res = User.authenticate_with_credentials("Abc@gmAil.Com", "123456")
+      expect(res).to be_an_instance_of(User) 
+    end
+
   end
 end
