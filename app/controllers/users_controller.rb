@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    user_exist = User.find_by_email(user_params["email"])
+    user_exist = User.find_by_email(user_params["email"].downcase)
     if user_exist == nil
       data = user_params
       data["email"] = data["email"].downcase
